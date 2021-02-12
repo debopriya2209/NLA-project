@@ -1,0 +1,82 @@
+<html>
+<head></head>
+<body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+<script>
+// Build the chart
+$(document).ready(function () {
+
+	var pos= 50;
+	var neg= 30;
+	var neu=20;
+
+  var data=[{name:'Positive',y:pos,color:'green'},{name:'Neutral',y:neu,color:'yellow'},{name:'Negative',y:neg,color:'red'}]
+  alert(data);
+
+  RenderPieChart('container', data);
+
+// Build the chart
+
+function RenderPieChart(elementId, dataList) {
+  new Highcharts.Chart({
+  chart: {
+    renderTo: elementId,
+	backgroundColor:'transparent',
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+ legend:{ itemStyle:{'color':'#ffff'}} ,
+  title: {
+    text: 'Sentiments Based on Keyword',
+	style:{ "color": "#ffff"}
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true,
+	  color:"#ffff"
+    }
+  },
+  series: [{
+    name: 'Sentiments',
+    colorByPoint: true,
+   
+    data:dataList 
+    // data: [{
+    //   name: 'Positive',
+    //   y: pos,
+    //   sliced: true,
+    //   selected: true,
+	  // color:'green'
+    // }, {
+    //   name: 'Neutral',
+    //   y: neu,
+	  // color:'yellow'
+    // }, {
+    //   name: 'Negative',
+    //   y: neg,
+	  // color:'red'
+    // }]
+  }]
+});
+  };
+  });
+
+</script>
+</body>
+</html>

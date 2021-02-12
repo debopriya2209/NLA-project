@@ -1,0 +1,161 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html>
+<head>
+	
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>Home</title>
+   
+   
+	<!--Bootsrap 4 CDN-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+    <!--Fontawesome CDN-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+	<!--Custom styles-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css') }}">
+	
+
+</head>
+<body>
+
+<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<div class="container">
+		<div class="row" style=" width: 655px;margin: auto;margin-top: 10px;">
+				<h1> <font color="white">Twitter Sentiment Analysis</font> </h1>
+			</div>
+	<div class="row">
+			<div class="col-sm-6">
+		<div id="container1" style="min-width: 310px; height: 400px; max-width: 400px; margin-top: 10%;margin-left: 60px;"></div>
+<script>
+  $(document).ready(function () {
+
+$.ajax({
+                    url: '/chart',
+                    type: "POST",
+                    success:function(res){
+			console.log('res.positive',res.positive);
+                  var data=[{name:'Positive',y:res.positive,color:'green'},{name:'Neutral',y:res.neutral,color:'yellow'},{name:'Negative',y:res.negative,color:'red'}];
+			RenderPieChart('container1', data);
+                    },
+                    error:function(error){
+                       console.log(error);
+                    }
+                });
+	var pos = 40;
+	var neg=50;
+	var neu=10;
+
+  //var data=[{name:'Positive',y:pos,color:'green'},{name:'Neutral',y:neu,color:'yellow'},{name:'Negative',y:neg,color:'red'}]
+  alert(data);
+
+  //RenderPieChart('container1', data);
+
+// Build the chart
+
+function RenderPieChart(elementId, dataList) {
+  new Highcharts.Chart({
+  chart: {
+    renderTo: elementId,
+	backgroundColor:'transparent',
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+ legend:{ itemStyle:{'color':'#ffff'}} ,
+  title: {
+    text: 'Sentiments Based on Keyword',
+	style:{ "color": "#ffff"}
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true,
+	  color:"#ffff"
+    }
+  },
+  series: [{
+    name: 'Sentiments',
+    colorByPoint: true,
+   
+    data:dataList 
+    // data: [{
+    //   name: 'Positive',
+    //   y: pos,
+    //   sliced: true,
+    //   selected: true,
+	  // color:'green'
+    // }, {
+    //   name: 'Neutral',
+    //   y: neu,
+	  // color:'yellow'
+    // }, {
+    //   name: 'Negative',
+    //   y: neg,
+	  // color:'red'
+    // }]
+  }]
+});
+  };
+  });
+</script>
+
+
+
+			</div>
+			<div class="col-sm-6">
+					<div id ="abc" style="margin-top: 10%; margin-right: 60px;">
+						<div>	<h4> <font size="2" color="white"><b>Positive Tweets :</b></font> </h4>
+							{%if tweets_pos%}
+							{% for tweet in tweets_pos %}
+							<li><font size="2" color="green">{{tweet}}</font><br>
+							{% endfor %}
+							{% endif %}
+						</div>
+						<div>	<h4> <font size="2" color="white"><b>Negative Tweets :</b></font> </h4>
+							{%if tweets_neg%}
+							{% for tweet in tweets_neg %}
+							<li><font size="2" color="red">{{tweet}}</font><br>
+							{% endfor %}
+							{% endif %}
+						</div>
+						<div>	<h4> <font size="2" color="white"><b>Neutral Tweets :</b></font> </h4>
+							{%if tweets_neu%}
+							{% for tweet in tweets_neu %}
+							<li><font size="2" color="yellow">{{tweet}}</font><br>
+							{% endfor %}
+							{% endif %}
+						</div>
+
+
+						</div>
+			</div>
+	<!--<div id="container1" style="min-width: 310px; height: 400px; max-width: 400px; margin-top: 10%;margin-left: 60px;"></div>-->
+</div>
+<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					<a href="/"><font color="white">LOG OUT</font></a>
+				</div>
+			</div>
+
+
+</body>
+</html>
